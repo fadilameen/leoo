@@ -1,0 +1,36 @@
+Server [localhost]:
+Database [postgres]:
+Port [5432]:
+Username [postgres]:
+Password for user postgres:
+psql (10.9)
+WARNING: Console code page (437) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+postgres=# select *from sales_man;
+ salesman_no | s_name | place | phone
+-------------+--------+-------+-------
+(0 rows)
+
+
+postgres=# create table sales_order(order_no int primary key,order_date not null,order_status char(10) not null check(order_status In('
+postgres'# inprocess','ful filled','cancelled','backorder')),salesman_no int references sales_man(salesman_no),del_type char(1) check(del_type='f' or del_type='p'));
+ERROR:  syntax error at or near "not"
+LINE 1: ...e sales_order(order_no int primary key,order_date not null,o...
+                                                             ^
+postgres=# create table sales_order(order_no int primary key,order_date dateinprocess','ful filled','cancelled','backorder')),salesman_no int references sales_man(salesman_no),del_type char(1) check(del_type='f' or del_type='p')); not null,order_status char(10) not null check(order_status In('
+postgres(# );
+ERROR:  syntax error at or near "','"
+LINE 1: ...(order_no int primary key,order_date dateinprocess','ful fil...
+                                                             ^
+postgres=# create table sales_order(order_no int primary key,order_date date not null,order_status char(10) not null check(order_status In('inprocess','ful filled','cancelled','backorder')),salesman_no int references sales_man(salesman_no),del_type char(1) check(del_type='f' or del_type='p'));
+CREATE TABLE
+postgres=# select *from sales_order;
+ order_no | order_date | order_status | salesman_no | del_type
+----------+------------+--------------+-------------+----------
+(0 rows)
+
+
+postgres=#

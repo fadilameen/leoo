@@ -1,0 +1,80 @@
+Server [localhost]:
+Database [postgres]:
+Port [5432]:
+Username [postgres]:
+Password for user postgres:
+psql (10.9)
+WARNING: Console code page (437) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+postgres=# create table customer(cust_no varchar(5),cust_name varchar(15),age int,phone varchar(10));
+CREATE TABLE
+postgres=# insert into customer values(101,'fadil',19,'9895741814'),(102,'ayisha',18,'9061686734'),(103,'nihal',20,'9847086223'),(105,'dhaniyel',18,'9744182613'),(106,'shamil',19,'8606678083');
+INSERT 0 5
+postgres=# select *from customer;
+ cust_no | cust_name | age |   phone
+---------+-----------+-----+------------
+ 101     | fadil     |  19 | 9895741814
+ 102     | ayisha    |  18 | 9061686734
+ 103     | nihal     |  20 | 9847086223
+ 105     | dhaniyel  |  18 | 9744182613
+ 106     | shamil    |  19 | 8606678083
+(5 rows)
+
+
+postgres=# alter table customer add d_birth date;
+ALTER TABLE
+postgres=# select *from customer;
+ cust_no | cust_name | age |   phone    | d_birth
+---------+-----------+-----+------------+---------
+ 101     | fadil     |  19 | 9895741814 |
+ 102     | ayisha    |  18 | 9061686734 |
+ 103     | nihal     |  20 | 9847086223 |
+ 105     | dhaniyel  |  18 | 9744182613 |
+ 106     | shamil    |  19 | 8606678083 |
+(5 rows)
+
+
+postgres=#
+postgres=# create table cust_phone as select cust_name,phone from customer;
+SELECT 5
+postgres=# select *from cust_phone;
+ cust_name |   phone
+-----------+------------
+ fadil     | 9895741814
+ ayisha    | 9061686734
+ nihal     | 9847086223
+ dhaniyel  | 9744182613
+ shamil    | 8606678083
+(5 rows)
+
+
+postgres=# alter table customer drop age;
+ALTER TABLE
+postgres=# alter table customer alter column cust_name type varchar(25);
+ALTER TABLE
+postgres=# truncate customer;
+TRUNCATE TABLE
+postgres=# select *from customer;
+ cust_no | cust_name | phone | d_birth
+---------+-----------+-------+---------
+(0 rows)
+
+
+postgres=# alter table customer rename to cust;
+ALTER TABLE
+postgres=# select *from cust;
+ cust_no | cust_name | phone | d_birth
+---------+-----------+-------+---------
+(0 rows)
+
+
+postgres=# drop table cust;
+DROP TABLE
+postgres=# select *from cust;
+ERROR:  relation "cust" does not exist
+LINE 1: select *from cust;
+                     ^
+postgres=#

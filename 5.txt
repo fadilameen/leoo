@@ -1,0 +1,124 @@
+Server [localhost]:
+Database [postgres]:
+Port [5432]:
+Username [postgres]:
+Password for user postgres:
+psql (10.9)
+WARNING: Console code page (437) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+postgres=# select *from employee
+postgres-# ;
+ empid | ename | salary | department | age
+-------+-------+--------+------------+-----
+(0 rows)
+
+
+postgres=# alter table employee add primary key(empid);
+ALTER TABLE
+postgres=# insert into employee values(101,'Dhaniyel',15000,'sales',19);
+INSERT 0 1
+postgres=# insert into employee values(101,'Fadil',,'sales',20);
+ERROR:  syntax error at or near ","
+LINE 1: insert into employee values(101,'Fadil',,'sales',20);
+                                                ^
+postgres=# insert into employee values(102,'Fadil',50000,'finance',20);
+INSERT 0 1
+postgres=# insert into employee values(103,'Ayisha',5000,'finance',25);
+INSERT 0 1
+postgres=# insert into employee values(104,'Ansaf',6000,'purchase',17);
+INSERT 0 1
+postgres=# insert into employee values(105,'Shamil',10000,'sales',21);
+INSERT 0 1
+postgres=# insert into employee values(106,'Arshad',13000,'purchase',24);
+INSERT 0 1
+postgres=# select *from employee;
+ empid |  ename   | salary | department | age
+-------+----------+--------+------------+-----
+   101 | Dhaniyel |  15000 | sales      |  19
+   102 | Fadil    |  50000 | finance    |  20
+   103 | Ayisha   |   5000 | finance    |  25
+   104 | Ansaf    |   6000 | purchase   |  17
+   105 | Shamil   |  10000 | sales      |  21
+   106 | Arshad   |  13000 | purchase   |  24
+(6 rows)
+
+
+postgres=# select count(empid) from employee;
+ count
+-------
+     6
+(1 row)
+
+
+postgres=# select ename,department from employee where age in(select max(age) from employee group by department);
+ ename  | department
+--------+------------
+ Ayisha | finance
+ Shamil | sales
+ Arshad | purchase
+(3 rows)
+
+
+postgres=# select ename,department,age from employee where age in(select max(age) from employee group by department);
+ ename  | department | age
+--------+------------+-----
+ Ayisha | finance    |  25
+ Shamil | sales      |  21
+ Arshad | purchase   |  24
+(3 rows)
+
+
+postgres=# select department,avg(age)from employee group by depArtment;
+ department |         avg
+------------+---------------------
+ purchase   | 20.5000000000000000
+ finance    | 22.5000000000000000
+ sales      | 20.0000000000000000
+(3 rows)
+
+
+postgres=# select department,avg(salary)from employee group by depArtment;
+ department |          avg
+------------+------------------------
+ purchase   |  9500.0000000000000000
+ finance    |     27500.000000000000
+ sales      | 12500.0000000000000000
+(3 rows)
+
+
+postgres=# select min(salary) as min salary from employee;
+ERROR:  syntax error at or near "salary"
+LINE 1: select min(salary) as min salary from employee;
+                                  ^
+postgres=# select min(salary) as min_salary from employee;
+ min_salary
+------------
+       5000
+(1 row)
+
+
+postgres=# select count(ename) from employee where department='sales';
+ count
+-------
+     2
+(1 row)
+
+
+postgres=# select max(salary) from employee where department='sales';
+  max
+-------
+ 15000
+(1 row)
+
+
+postgres=# select max(salary)-min(salary) as sal_deifference  from employee;
+ sal_deifference
+-----------------
+           45000
+(1 row)
+
+
+postgres=#

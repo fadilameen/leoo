@@ -1,0 +1,186 @@
+Server [localhost]:
+Database [postgres]:
+Port [5432]:
+Username [postgres]:
+Password for user postgres:
+psql (10.9)
+WARNING: Console code page (437) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+postgres=# postgres=# create table hospital(doctorid int,doctorname varchar(10),department varchar(25),qualification varchar(25),experience int);
+ERROR:  syntax error at or near "postgres"
+LINE 1: postgres=# create table hospital(doctorid int,doctorname var...
+        ^
+postgres=# CREATE TABLE
+postgres-# postgres=# insert into hospital values(101,'fadil','orthology','md');
+ERROR:  syntax error at or near "=#"
+LINE 2: postgres=# insert into hospital values(101,'fadil','ortholog...
+                ^
+postgres=# INSERT 0 1
+postgres-# postgres=# insert into hospital values(102,'nihal','cardiology','mbbs');
+ERROR:  syntax error at or near "0"
+LINE 1: INSERT 0 1
+               ^
+postgres=# INSERT 0 1
+postgres-# postgres=# insert into hospital values(103,'aysha','gynacology','md');
+ERROR:  syntax error at or near "0"
+LINE 1: INSERT 0 1
+               ^
+postgres=# INSERT 0 1
+postgres-# postgres=# insert into hospital values(104,'dhaniyel','dentology','mbbs');
+ERROR:  syntax error at or near "0"
+LINE 1: INSERT 0 1
+               ^
+postgres=# INSERT 0 1
+postgres-# postgres=# insert into hospital values(105,'shamil','skin','md');
+ERROR:  syntax error at or near "0"
+LINE 1: INSERT 0 1
+               ^
+postgres=# INSERT 0 1
+postgres-# postgres=# select *from hospital;
+ERROR:  syntax error at or near "0"
+LINE 1: INSERT 0 1
+               ^
+postgres=#  doctorid | doctorname | department | qualification | experience
+postgres-# ----------+------------+------------+---------------+------------
+postgres-#       101 | fadil      | orthology  | md            |
+postgres-#       102 | nihal      | cardiology | mbbs          |
+postgres-#       103 | aysha      | gynacology | md            |
+postgres-#       104 | dhaniyel   | dentology  | mbbs          |
+postgres-#       105 | shamil     | skin       | md            |
+postgres-# (5 rows)
+postgres-#
+postgres-#
+postgres-# postgres=#
+postgres-#
+postgres-#
+postgres-#
+postgres-# ;
+ERROR:  syntax error at or near "doctorid"
+LINE 1: doctorid | doctorname | department | qualification | experie...
+        ^
+postgres=# select *from hospital
+postgres-# ;
+ doctorid | doctorname | department | qualification | experience
+----------+------------+------------+---------------+------------
+      101 | fadil      | orthology  | md            |
+      102 | nihal      | cardiology | mbbs          |
+      103 | aysha      | gynacology | md            |
+      104 | dhaniyel   | dentology  | mbbs          |
+      105 | shamil     | skin       | md            |
+(5 rows)
+
+
+postgres=# select doctorname from hospital where qualification='md';
+ doctorname
+------------
+ fadil
+ aysha
+ shamil
+(3 rows)
+
+
+postgres=# insert into hospital(experience) values(5);
+INSERT 0 1
+postgres=# select *from hospital;
+ doctorid | doctorname | department | qualification | experience
+----------+------------+------------+---------------+------------
+      101 | fadil      | orthology  | md            |
+      102 | nihal      | cardiology | mbbs          |
+      103 | aysha      | gynacology | md            |
+      104 | dhaniyel   | dentology  | mbbs          |
+      105 | shamil     | skin       | md            |
+          |            |            |               |          5
+(6 rows)
+
+
+postgres=# update hospital set experience value=4 where doctorid='101';
+ERROR:  syntax error at or near "value"
+LINE 1: update hospital set experience value=4 where doctorid='101';
+                                       ^
+postgres=# update hospital set experience=4 where doctorid='101';
+UPDATE 1
+postgres=# select *from hospital;
+ doctorid | doctorname | department | qualification | experience
+----------+------------+------------+---------------+------------
+      102 | nihal      | cardiology | mbbs          |
+      103 | aysha      | gynacology | md            |
+      104 | dhaniyel   | dentology  | mbbs          |
+      105 | shamil     | skin       | md            |
+          |            |            |               |          5
+      101 | fadil      | orthology  | md            |          4
+(6 rows)
+
+
+postgres=# delete from hospital where experience=5;
+DELETE 1
+postgres=# select *from hospital;
+ doctorid | doctorname | department | qualification | experience
+----------+------------+------------+---------------+------------
+      102 | nihal      | cardiology | mbbs          |
+      103 | aysha      | gynacology | md            |
+      104 | dhaniyel   | dentology  | mbbs          |
+      105 | shamil     | skin       | md            |
+      101 | fadil      | orthology  | md            |          4
+(5 rows)
+
+
+postgres=# update hospital set experience=6 where doctorid='102';
+UPDATE 1
+postgres=# update hospital set experience=6 where doctorid='103';
+UPDATE 1
+postgres=# update hospital set experience=2 where doctorid='104';
+UPDATE 1
+postgres=# update hospital set experience=2 where doctorid='105';
+UPDATE 1
+postgres=# select *from hospital;
+ doctorid | doctorname | department | qualification | experience
+----------+------------+------------+---------------+------------
+      101 | fadil      | orthology  | md            |          4
+      102 | nihal      | cardiology | mbbs          |          6
+      103 | aysha      | gynacology | md            |          6
+      104 | dhaniyel   | dentology  | mbbs          |          2
+      105 | shamil     | skin       | md            |          2
+(5 rows)
+
+
+postgres=# select from table where qualification='md';
+ERROR:  syntax error at or near "table"
+LINE 1: select from table where qualification='md';
+                    ^
+postgres=# select from hospital where qualification='md';
+--
+(3 rows)
+
+
+postgres=# select doctorname from hospital where qualification='md';
+ doctorname
+------------
+ fadil
+ aysha
+ shamil
+(3 rows)
+
+
+postgres=# select doctorname from hospital where department='skin';
+ doctorname
+------------
+ shamil
+(1 row)
+
+
+postgres=# delete from hospital where doctorid=104;
+DELETE 1
+postgres=# select *from hospital;
+ doctorid | doctorname | department | qualification | experience
+----------+------------+------------+---------------+------------
+      101 | fadil      | orthology  | md            |          4
+      102 | nihal      | cardiology | mbbs          |          6
+      103 | aysha      | gynacology | md            |          6
+      105 | shamil     | skin       | md            |          2
+(4 rows)
+
+
+postgres=#

@@ -1,0 +1,135 @@
+Server [localhost]:
+Database [postgres]:
+Port [5432]:
+Username [postgres]:
+Password for user postgres:
+psql (10.9)
+WARNING: Console code page (437) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+postgres=# create table bankcustomer(accno int primary key,custname varchar(30),place varchar(30);
+postgres(# );
+ERROR:  syntax error at or near ";"
+LINE 1: ...cno int primary key,custname varchar(30),place varchar(30);
+                                                                     ^
+postgres=# create table bankcustomer(accno int primary key,custname varchar(30),place varchar(30));
+CREATE TABLE
+postgres=# create table deposit(accno int foreign key,depositno int,damount int);
+ERROR:  syntax error at or near "foreign"
+LINE 1: create table deposit(accno int foreign key,depositno int,dam...
+                                       ^
+postgres=# create table deposit(accno int references bankcustomer,depositno int,damount int);
+CREATE TABLE
+postgres=# create table loan(accno int references bankcustomer,loanno int,lamount int);
+CREATE TABLE
+postgres=# insert into bankcustomer(101,'fadil','calicut');
+ERROR:  syntax error at or near "101"
+LINE 1: insert into bankcustomer(101,'fadil','calicut');
+                                 ^
+postgres=# insert into bankcustomer values(101,'fadil','calicut');
+INSERT 0 1
+postgres=# insert into bankcustomer values(102,'nihal','kunnamangalam');
+INSERT 0 1
+postgres=# insert into bankcustomer values(103,'ayisha','koduvally');
+INSERT 0 1
+postgres=# insert into bankcustomer values(104,'dhaniyel','nallalam');
+INSERT 0 1
+postgres=# insert into bankcustomer values(105,'niha','poonoor');
+INSERT 0 1
+postgres=# insert into bankcustomer values(106,'raniya','nadapuram');
+INSERT 0 1
+postgres=# insert into bankcustomer values(107,'chechu','vadakara');
+INSERT 0 1
+postgres=# insert into bankcustomer values(108,'sufiyan','kappad');
+INSERT 0 1
+postgres=# insert into deposit values(101,11,500000);
+INSERT 0 1
+postgres=# insert into deposit values(103,12,2000000);
+INSERT 0 1
+postgres=# insert into deposit values(105,13,700000);
+INSERT 0 1
+postgres=# insert into deposit values(107,14,80000);
+INSERT 0 1
+postgres=# insert into loan values(102,001,1000000);
+INSERT 0 1
+postgres=# insert into loan values(104,002,3000000);
+INSERT 0 1
+postgres=# insert into loan values(106,003,500000);
+INSERT 0 1
+postgres=# select *from bankcustomer;
+ accno | custname |     place
+-------+----------+---------------
+   101 | fadil    | calicut
+   102 | nihal    | kunnamangalam
+   103 | ayisha   | koduvally
+   104 | dhaniyel | nallalam
+   105 | niha     | poonoor
+   106 | raniya   | nadapuram
+   107 | chechu   | vadakara
+   108 | sufiyan  | kappad
+(8 rows)
+
+
+postgres=# select *from deposit;
+ accno | depositno | damount
+-------+-----------+---------
+   101 |        11 |  500000
+   103 |        12 | 2000000
+   105 |        13 |  700000
+   107 |        14 |   80000
+(4 rows)
+
+
+postgres=# select *from loan;
+ accno | loanno | lamount
+-------+--------+---------
+   102 |      1 | 1000000
+   104 |      2 | 3000000
+   106 |      3 |  500000
+(3 rows)
+
+
+postgres=# select b,accno,custname,damount from bankcustomer b join deposit d on b.accno=d.accno where b.accno not in(select accno from loan);
+ERROR:  column reference "accno" is ambiguous
+LINE 1: select b,accno,custname,damount from bankcustomer b join dep...
+                 ^
+postgres=# select b.accno,custname,damount from bankcustomer b join deposit d on b.accno=d.accno where b.accno not in(select accno from loan);
+ accno | custname | damount
+-------+----------+---------
+   101 | fadil    |  500000
+   103 | ayisha   | 2000000
+   105 | niha     |  700000
+   107 | chechu   |   80000
+(4 rows)
+
+
+postgres=# select b.accno,custname,lamount from bankcustomer b join loan on b.accno=loan.accno where b.accno not in(select accno from deposit);
+ accno | custname | lamount
+-------+----------+---------
+   102 | nihal    | 1000000
+   104 | dhaniyel | 3000000
+   106 | raniya   |  500000
+(3 rows)
+
+
+postgres=# select custname from bankcustomer where accno in((select accno from loan)intersect(select accno from deposit);
+postgres(# );
+ERROR:  syntax error at or near ";"
+LINE 1: ...select accno from loan)intersect(select accno from deposit);
+                                                                      ^
+postgres=# select custname from bankcustomer where accno in((select accno from loan)intersect(select accno from deposit));
+ custname
+----------
+(0 rows)
+
+
+postgres=# select custname from bankcustomer where accno not in((select accno from loan)union(select accno from deposit));
+ custname
+----------
+ sufiyan
+(1 row)
+
+
+postgres=#
